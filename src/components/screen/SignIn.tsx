@@ -3,7 +3,6 @@ import * as Facebook from 'expo-facebook';
 import * as GoogleSignIn from 'expo-google-sign-in';
 
 import { Alert, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
-import { DefaultNavigationProps, User } from '../../types';
 import { Button as DoobooButton, EditText } from '@dooboo-ui/native';
 import React, { ReactElement, useEffect, useState } from 'react';
 import {
@@ -12,15 +11,18 @@ import {
   iOSExpoClientId,
 } from '../../../config';
 
+import { AuthStackNavigationProps } from '../navigation/AuthStackNavigator';
 import Button from '../shared/Button';
 import Constants from 'expo-constants';
 import { IC_ICON } from '../../utils/Icons';
 import { Ionicons } from '@expo/vector-icons';
 import StatusBar from '../shared/StatusBar';
+import { User } from '../../types';
 import { colors } from '../../theme';
 import { getString } from '../../../STRINGS';
 import styled from 'styled-components/native';
 import { useThemeContext } from '@dooboo-ui/native-theme';
+import { validateEmail } from '../../utils/common';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -28,9 +30,13 @@ const Container = styled.SafeAreaView`
   background: ${({ theme }): string => theme.background};
 `;
 
+const Wrapper = styled.View`
+  margin: 40px;
+`;
+
 const LogoWrapper = styled.View`
-  margin-top: 104px;
-  margin-bottom: 60px;
+  margin-top: 60px;
+  margin-bottom: 88px;
 `;
 
 const StyledLogoImage = styled.Image`
@@ -44,10 +50,6 @@ const StyledLogoText = styled.Text`
   font-weight: bold;
 `;
 
-const Wrapper = styled.View`
-  margin: 0 40px;
-`;
-
 const ButtonWrapper = styled.View`
   margin-top: 16px;
   width: 100%;
@@ -56,7 +58,7 @@ const ButtonWrapper = styled.View`
 
 const FindPwTouchOpacity = styled.TouchableOpacity`
   padding: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   align-self: center;
 `;
 
@@ -66,15 +68,33 @@ const FindPwText = styled.Text`
 `;
 
 const SocialButtonWrapper = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 `;
 
 interface Props {
-  navigation: DefaultNavigationProps<'SignIn'>;
+  navigation: AuthStackNavigationProps<'SignIn'>;
 }
 
+const StyledAgreementTextWrapper = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 0 40px 0;
+`;
+
+const StyledAgreementText = styled.Text`
+  line-height: 22px;
+  color: #777;
+`;
+
+const StyledAgreementLinedText = styled.Text`
+  line-height: 22px;
+  color: ${({ theme }): string => theme.tintColor};
+  text-decoration-line: underline;
+`;
+
 function SignIn(props: Props): ReactElement {
-  const [isSignIn, setIsSignIn] = useState<boolean>(false);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
   const [signingInFacebook, setSigningInFacebook] = useState<boolean>(false);
   const [signingInGoogle, setSigningInGoogle] = useState<boolean>(false);
   const [googleUser, setGoogleUser] = useState<User | null | unknown>(null);
@@ -85,11 +105,6 @@ function SignIn(props: Props): ReactElement {
   let timer: number;
 
   const { theme, changeThemeType } = useThemeContext();
-
-  const validateEmail = (email: string): boolean => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
 
   const goToSignUp = (): void => {
     props.navigation.navigate('SignUp');
@@ -105,14 +120,13 @@ function SignIn(props: Props): ReactElement {
       return;
     }
 
-    if (password === '') {
+    if (!password) {
       setErrorPassword(getString('PASSWORD_REQUIRED'));
       return;
     }
-
-    setIsSignIn(true);
+    setIsLoggingIn(true);
     timer = setTimeout(() => {
-      setIsSignIn(false);
+      setIsLoggingIn(false);
       clearTimeout(timer);
       if (props.navigation) {
         props.navigation.resetRoot({
@@ -121,6 +135,10 @@ function SignIn(props: Props): ReactElement {
         });
       }
     }, 1000);
+  };
+
+  const goToWebView = (uri: string): void => {
+    props.navigation.navigate('WebView', { uri });
   };
 
   const initAsync = async (): Promise<void> => {
@@ -269,7 +287,7 @@ function SignIn(props: Props): ReactElement {
             <View style={{ width: 8 }} />
             <Button
               testID="btn-sign-in"
-              isLoading={isSignIn}
+              isLoading={isLoggingIn}
               onPress={onSignIn}
               containerStyle={{ flex: 1, flexDirection: 'row' }}
             >
@@ -290,7 +308,7 @@ function SignIn(props: Props): ReactElement {
                   borderColor: theme.background,
                   borderRadius: 4,
                   width: '100%',
-                  height: 60,
+                  height: 52,
                 },
               ]}
               iconLeft={
@@ -317,7 +335,7 @@ function SignIn(props: Props): ReactElement {
                   borderColor: theme.background,
                   borderRadius: 4,
                   width: '100%',
-                  height: 60,
+                  height: 52,
                 },
               ]}
               iconLeft={
@@ -336,6 +354,22 @@ function SignIn(props: Props): ReactElement {
               textStyle={{ fontWeight: '700', color: 'white' }}
             />
           </SocialButtonWrapper>
+          <StyledAgreementTextWrapper>
+            <StyledAgreementText>{getString('AGREEMENT1')}</StyledAgreementText>
+            <StyledAgreementLinedText
+              onPress={(): void => goToWebView('https://dooboolab.com/termsofservice')}
+              testID="webView"
+            >
+              {getString('AGREEMENT2')}
+            </StyledAgreementLinedText>
+            <StyledAgreementText>{getString('AGREEMENT3')}</StyledAgreementText>
+            <StyledAgreementLinedText
+              onPress={(): void => goToWebView('https://dooboolab.com/privacyandpolicy')}
+            >
+              {getString('AGREEMENT4')}
+            </StyledAgreementLinedText>
+            <StyledAgreementText>{getString('AGREEMENT5')}</StyledAgreementText>
+          </StyledAgreementTextWrapper>
         </Wrapper>
       </ScrollView>
     </Container>

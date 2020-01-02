@@ -1,13 +1,14 @@
 import React, { ReactElement, useState } from 'react';
 
+import { AuthStackNavigationProps } from '../navigation/AuthStackNavigator';
 import Button from '../shared/Button';
-import { DefaultNavigationProps } from '../../types';
 import { EditText } from '@dooboo-ui/native';
 import { getString } from '../../../STRINGS';
 import styled from 'styled-components/native';
 import { useThemeContext } from '@dooboo-ui/native-theme';
+import { validateEmail } from '../../utils/common';
 
-const StyledSafeAreaView = styled.View`
+const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }): string => theme.background};
 `;
@@ -22,21 +23,16 @@ const ButtonWrapper = styled.View`
 `;
 
 interface Props {
-  navigation: DefaultNavigationProps<'FindPw'>;
+  navigation: AuthStackNavigationProps<'FindPw'>;
 }
 
 function Page(props: Props): ReactElement {
   const [email, setEmail] = useState<string>('');
   const [errorEmail, setErrorEmail] = useState<string>('');
-  const [isFindPw, setIsFindPw] = useState<boolean>(false);
+  const [findingPw, setFindingPw] = useState<boolean>(false);
   let timer: number;
 
   const { theme } = useThemeContext();
-
-  const validateEmail = (email: string): boolean => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
 
   const onFindPw = (): void => {
     if (!validateEmail(email)) {
@@ -44,9 +40,9 @@ function Page(props: Props): ReactElement {
       return;
     }
 
-    setIsFindPw(true);
+    setFindingPw(true);
     timer = setTimeout(() => {
-      setIsFindPw(false);
+      setFindingPw(false);
       clearTimeout(timer);
       if (props.navigation) {
         props.navigation.navigate('SignIn');
@@ -55,7 +51,7 @@ function Page(props: Props): ReactElement {
   };
 
   return (
-    <StyledSafeAreaView>
+    <Container>
       <Wrapper>
         <EditText
           testID="input-email"
@@ -65,7 +61,7 @@ function Page(props: Props): ReactElement {
           }}
           label={getString('EMAIL')}
           placeholder="hello@example.com"
-          placeholderTextColor="#ADB5BD"
+          placeholderTextColor={theme.placeholder}
           value={email}
           onChangeText={(text: string): void => {
             setEmail(text);
@@ -78,7 +74,7 @@ function Page(props: Props): ReactElement {
         <ButtonWrapper>
           <Button
             testID="btn-find-pw"
-            isLoading={isFindPw}
+            isLoading={findingPw}
             onPress={onFindPw}
             containerStyle={{ padding: 5 }}
           >
@@ -86,7 +82,7 @@ function Page(props: Props): ReactElement {
           </Button>
         </ButtonWrapper>
       </Wrapper>
-    </StyledSafeAreaView>
+    </Container>
   );
 }
 

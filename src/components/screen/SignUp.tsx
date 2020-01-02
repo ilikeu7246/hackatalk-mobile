@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from 'react';
+import { validateEmail, validatePassword } from '../../utils/common';
 
+import { AuthStackNavigationProps } from '../navigation/AuthStackNavigator';
 import Button from '../shared/Button';
-import { DefaultNavigationProps } from '../../types';
 import { EditText } from '@dooboo-ui/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import StatusBar from '../shared/StatusBar';
-import { View } from 'react-native';
 import { getString } from '../../../STRINGS';
 import styled from 'styled-components/native';
 import { useThemeContext } from '@dooboo-ui/native-theme';
@@ -22,11 +22,11 @@ const Wrapper = styled.View`
 const ButtonWrapper = styled.View`
   width: 100%;
   margin-top: 20px;
-  flex-direction: row;
+  flex-direction: row-reverse;
 `;
 
 interface Props {
-  navigation: DefaultNavigationProps<'SignUp'>;
+  navigation: AuthStackNavigationProps<'SignUp'>;
 }
 
 function Page(props: Props): ReactElement {
@@ -44,16 +44,6 @@ function Page(props: Props): ReactElement {
   let timer: number;
 
   const { theme } = useThemeContext();
-
-  const validateEmail = (email: string): boolean => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
-
-  const validatePassword = (password: string): boolean => {
-    const re = /^.*(?=.{6,15})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-    return re.test(password);
-  };
 
   const onSignUp = (): void => {
     if (!validateEmail(email) || !validatePassword(password) || name.length < 4 || password !== confirmPassword) {
@@ -95,7 +85,7 @@ function Page(props: Props): ReactElement {
             }}
             label={getString('EMAIL')}
             placeholder="hello@example.com"
-            placeholderTextColor="#ADB5BD"
+            placeholderTextColor={theme.placeholder}
             value={email}
             onChangeText={(text: string): void => {
               setEmail(text);
@@ -147,7 +137,7 @@ function Page(props: Props): ReactElement {
             }}
             label={getString('NAME')}
             placeholder="Write email address"
-            placeholderTextColor="#ADB5BD"
+            placeholderTextColor={theme.placeholder}
             value={name}
             onChangeText={(text: string): void => {
               setName(text);
@@ -165,7 +155,7 @@ function Page(props: Props): ReactElement {
             }}
             label={getString('STATUS')}
             placeholder="Write status"
-            placeholderTextColor="#ADB5BD"
+            placeholderTextColor={theme.placeholder}
             value={status}
             onChangeText={(text: string): void => {
               setStatus(text);
@@ -174,12 +164,11 @@ function Page(props: Props): ReactElement {
             onSubmitEditing={onSignUp}
           />
           <ButtonWrapper>
-            <View style={{ flex: 1 }}/>
             <Button
               testID="btn-sign-up"
               isLoading={isSignUp}
               onPress={onSignUp}
-              containerStyle={{ padding: 5, flex: 1 }}
+              containerStyle={{ padding: 5, width: '50%' }}
             >
               {getString('SIGN_UP')}
             </Button>
