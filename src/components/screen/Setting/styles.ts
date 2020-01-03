@@ -10,7 +10,7 @@ export const HeaderContainer = styled.View`
   background-color: ${({ theme }): string => theme.background};
   height: 52px;
   justify-content: center;
-  margin-left: 10px;
+  margin: 0 20px;
   border-bottom-width: 1;
   border-bottom-color: ${({ theme }): string => theme.lineColor};
 `;
@@ -21,8 +21,7 @@ export const SectionHeader = styled.Text`
 
 export const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 0 20px;
   width: 100%;
   height: 52px;
   align-items: center;

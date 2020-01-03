@@ -102,6 +102,8 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('PASSWORD')}
+            placeholder="******"
+            placeholderTextColor={theme.placeholder}
             value={password}
             onChangeText={(text: string): void => {
               setPassword(text);
@@ -119,6 +121,8 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('CONFIRM_PASSWORD')}
+            placeholder="******"
+            placeholderTextColor={theme.placeholder}
             value={confirmPassword}
             onChangeText={(text: string): void => {
               setConfirmPassword(text);
@@ -136,7 +140,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('NAME')}
-            placeholder="Write email address"
+            placeholder={getString('PLACEHOLDER_NAME')}
             placeholderTextColor={theme.placeholder}
             value={name}
             onChangeText={(text: string): void => {
@@ -154,13 +158,13 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('STATUS')}
-            placeholder="Write status"
+            placeholder={getString('PLACEHOLDER_STATUS')}
             placeholderTextColor={theme.placeholder}
             value={status}
             onChangeText={(text: string): void => {
               setStatus(text);
             }}
-            style={{ marginTop: 20 }}
+            style={{ marginTop: 20, marginBottom: 20 }}
             onSubmitEditing={onSignUp}
           />
           <ButtonWrapper>

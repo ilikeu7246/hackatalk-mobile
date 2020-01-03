@@ -67,7 +67,7 @@ function Page(props: Props): ReactElement {
             setEmail(text);
             setErrorEmail('');
           }}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, marginBottom: 20 }}
           errorText={errorEmail}
           onSubmitEditing={onFindPw}
         />

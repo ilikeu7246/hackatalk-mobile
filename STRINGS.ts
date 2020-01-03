@@ -63,6 +63,8 @@ const en = {
   AGREEMENT4: 'Privacy Policy',
   AGREEMENT5: ' by going onto next step.',
   WEB_VIEW: 'Web View',
+  PLACEHOLDER_NAME: 'Write your name',
+  PLACEHOLDER_STATUS: 'Write status message',
 };
 
 const ko = {
@@ -125,6 +127,8 @@ const ko = {
   AGREEMENT3: ' 및 ',
   AGREEMENT4: '개인정보취급방침',
   AGREEMENT5: '에 동의하는 것으로 간주합니다.',
+  PLACEHOLDER_NAME: '이름을 입력해주세요.',
+  PLACEHOLDER_STATUS: '상태 메세지를 입력해주세요.',
 };
 
 i18n.fallbacks = true;
