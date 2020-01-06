@@ -60,6 +60,7 @@ function Page(props: Props): ReactElement {
             color: theme.fontColor,
           }}
           label={getString('EMAIL')}
+          inputContainerType="box"
           placeholder="hello@example.com"
           placeholderTextColor={theme.placeholder}
           value={email}

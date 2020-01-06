@@ -84,6 +84,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('EMAIL')}
+            inputContainerType="box"
             placeholder="hello@example.com"
             placeholderTextColor={theme.placeholder}
             value={email}
@@ -102,6 +103,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('PASSWORD')}
+            inputContainerType="box"
             placeholder="******"
             placeholderTextColor={theme.placeholder}
             value={password}
@@ -121,6 +123,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('CONFIRM_PASSWORD')}
+            inputContainerType="box"
             placeholder="******"
             placeholderTextColor={theme.placeholder}
             value={confirmPassword}
@@ -140,6 +143,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('NAME')}
+            inputContainerType="box"
             placeholder={getString('PLACEHOLDER_NAME')}
             placeholderTextColor={theme.placeholder}
             value={name}
@@ -158,6 +162,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('STATUS')}
+            inputContainerType="box"
             placeholder={getString('PLACEHOLDER_STATUS')}
             placeholderTextColor={theme.placeholder}
             value={status}

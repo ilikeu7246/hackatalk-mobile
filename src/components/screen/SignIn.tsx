@@ -244,6 +244,7 @@ function SignIn(props: Props): ReactElement {
             }}
             style={{ marginBottom: 20 }}
             isRow={true}
+            inputContainerType="box"
             label={getString('EMAIL')}
             placeholder="hello@example.com"
             placeholderTextColor={theme.placeholder}
@@ -263,6 +264,7 @@ function SignIn(props: Props): ReactElement {
             }}
             style={{ marginBottom: 20 }}
             isRow={true}
+            inputContainerType="box"
             label={getString('PASSWORD')}
             placeholder="******"
             placeholderTextColor={theme.placeholder}
