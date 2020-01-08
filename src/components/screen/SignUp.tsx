@@ -45,15 +45,15 @@ function Page(props: Props): ReactElement {
 
   const { theme } = useThemeContext();
 
-  const onSignUp = (): void => {
-    if (!validateEmail(email) || !validatePassword(password) || name.length < 4 || password !== confirmPassword) {
+  const onSignUp = async (): Promise<void> => {
+    if (!validateEmail(email) || !validatePassword(password) || name.length < 2 || password !== confirmPassword) {
       if (!validateEmail(email)) {
         setErrorEmail(getString('EMAIL_FORMAT_NOT_VALID'));
       }
       if (!validatePassword(password)) {
         setErrorPassword(getString('PASSWORD_MIN'));
       }
-      if (name.length < 4) {
+      if (name.length < 2) {
         setErrorName(getString('NAME_MIN'));
       }
       if (password !== confirmPassword) {
@@ -102,6 +102,7 @@ function Page(props: Props): ReactElement {
             textStyle={{
               color: theme.fontColor,
             }}
+            placeholder="********"
             label={getString('PASSWORD')}
             inputContainerType="box"
             placeholder="******"
@@ -122,6 +123,7 @@ function Page(props: Props): ReactElement {
             textStyle={{
               color: theme.fontColor,
             }}
+            placeholder="********"
             label={getString('CONFIRM_PASSWORD')}
             inputContainerType="box"
             placeholder="******"
@@ -143,8 +145,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('NAME')}
-            inputContainerType="box"
-            placeholder={getString('PLACEHOLDER_NAME')}
+            placeholder="youremail@email.com"
             placeholderTextColor={theme.placeholder}
             value={name}
             onChangeText={(text: string): void => {
@@ -162,8 +163,7 @@ function Page(props: Props): ReactElement {
               color: theme.fontColor,
             }}
             label={getString('STATUS')}
-            inputContainerType="box"
-            placeholder={getString('PLACEHOLDER_STATUS')}
+            placeholder={getString('STATUS_MSG_HINT')}
             placeholderTextColor={theme.placeholder}
             value={status}
             onChangeText={(text: string): void => {
